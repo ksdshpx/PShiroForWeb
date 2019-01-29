@@ -68,7 +68,9 @@
 		things such as PropertiesPlaceholderConfigurer and abstract beans or anything 
 		else we might need: -->
 	<!-- 6.配置ShiroFilter
-		   6.1id必须和web.xml文件中配置的DelegatingFilterProxy的<filter-name>一致
+		   6.1 id必须和web.xml文件中配置的DelegatingFilterProxy的<filter-name>一致
+		   	   若不一致，则会抛出NoSuchBeanDefinitionException,因为Shiro会到IOC容器中
+		   	   查找和filter-name名字对应的FilterBean
 		   6.2
 	 -->
 	<bean id="shiroFilter"
