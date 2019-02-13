@@ -39,7 +39,14 @@
 	<!-- 3.配置Realm
 		 3.1直接配置实现了Realm接口的Bean
 	 -->
-	<bean id="jdbcRealm" class="cn.ksdshpx.shiro.realm.ShiroRealm"></bean>
+	<bean id="jdbcRealm" class="cn.ksdshpx.shiro.realm.ShiroRealm">
+		<property name="credentialsMatcher">
+			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="MD5"></property>
+				<property name="hashIterations" value="1024"></property>
+			</bean>
+		</property>
+	</bean>
 
 	<!-- ========================================================= Shiro Spring-specific 
 		integration ========================================================= -->
@@ -83,11 +90,13 @@
 			配置哪些页面需要被保护，以及访问这些页面需要的权限
 			1)anon   :可以被匿名访问
 			2)authc:必须认证(即登录)之后才能被访问
+			3)logout:登出
 		 -->
 		<property name="filterChainDefinitions">
 			<value>
 				/login.jsp = anon
 				/shiro/login = anon
+				/shiro/logout = logout
 				/** = authc
 			</value>
 		</property>

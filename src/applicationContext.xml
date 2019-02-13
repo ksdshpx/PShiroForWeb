@@ -39,7 +39,14 @@
 	<!-- 3.配置Realm
 		 3.1直接配置实现了Realm接口的Bean
 	 -->
-	<bean id="jdbcRealm" class="cn.ksdshpx.shiro.realm.ShiroRealm"></bean>
+	<bean id="jdbcRealm" class="cn.ksdshpx.shiro.realm.ShiroRealm">
+		<property name="credentialsMatcher">
+			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="MD5"></property>
+				<property name="hashIterations" value="1024"></property>
+			</bean>
+		</property>
+	</bean>
 
 	<!-- ========================================================= Shiro Spring-specific 
 		integration ========================================================= -->
