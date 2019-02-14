@@ -13,7 +13,7 @@
 		<!-- Single realm app. If you have multiple realms, use the 'realms' property 
 			instead. -->
 		<property name="sessionMode" value="native" />
-		<property name="realm" ref="jdbcRealm" />
+		<property name="authenticator" ref="authenticator"></property>
 	</bean>
 
 	<!-- Let's use some enterprise caching support for better performance. You 
@@ -33,6 +33,17 @@
 		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/> 
 	</bean>
 
+	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+		<property name="realms">
+			<list>
+				<ref bean="jdbcRealm"/>
+				<ref bean="secondRealm"/>
+			</list>
+		</property>
+		<property name="authenticationStrategy">
+			<bean class="org.apache.shiro.authc.pam.AllSuccessfulStrategy"></bean>
+		</property>
+	</bean>
 	<!-- Used by the SecurityManager to access security data (users, roles, 
 		etc). Many other realm implementations can be used too (PropertiesRealm, 
 		LdapRealm, etc. -->
@@ -43,6 +54,15 @@
 		<property name="credentialsMatcher">
 			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
 				<property name="hashAlgorithmName" value="MD5"></property>
+				<property name="hashIterations" value="1024"></property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="secondRealm" class="cn.ksdshpx.shiro.realm.SecondRealm">
+		<property name="credentialsMatcher">
+			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="SHA1"></property>
 				<property name="hashIterations" value="1024"></property>
 			</bean>
 		</property>

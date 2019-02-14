@@ -15,11 +15,11 @@ import org.apache.shiro.util.ByteSource;
  * @author peng.x
  * @date 2019年1月24日 下午4:44:20
  */
-public class ShiroRealm extends AuthenticatingRealm {
+public class SecondRealm extends AuthenticatingRealm {
 
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		System.out.println("[FirstRealm doGetAuthenticationInfo]");
+		System.out.println("[SecondRealm doGetAuthenticationInfo]");
 		//1.把AuthenticationToken转换为UsernamePasswordToken
 		UsernamePasswordToken upToken = (UsernamePasswordToken) token;
 		//2.从UsernamePasswordToken中获取username
@@ -41,21 +41,21 @@ public class ShiroRealm extends AuthenticatingRealm {
 		//2)credentials:密码
 		Object credentials =null;//"fc1709d0a95a6be30bc5926fdb7f22f4";
 		if("admin".equals(username)) {
-			credentials = "038bdaf98f2037b31f1e75b5b4c9b26e";
+			credentials = "ce2f6417c7e1d32c1d81a797ee0b499f87c5de06---";
 		}else if("user".equals(username)) {
-			credentials = "098d2c478e9c11555ce2823231e02ec1";
+			credentials = "073d4c3ae812935f23cb3f2a71943f49e082a718---";
 		}
 		//3)realmName:当前realm对象的name.调用父类对象的getName()方法即可
 		String realmName = getName();
 		//4)盐值
 		ByteSource credentialsSalt = ByteSource.Util.bytes(username);
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(principal, credentials, credentialsSalt, realmName);
+		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo("secondRealmName", credentials, credentialsSalt, realmName);
 		return info;
 	}
 	public static void main(String[] args) {
-		String hashAlgorithmName = "MD5";
+		String hashAlgorithmName = "SHA1";
 		Object credentials = "123456";
-		Object salt = ByteSource.Util.bytes("user");
+		Object salt = ByteSource.Util.bytes("admin");
 		int hashIterations = 1024;
 		Object result = new SimpleHash(hashAlgorithmName, credentials, salt, hashIterations);
 		System.out.println(result);
