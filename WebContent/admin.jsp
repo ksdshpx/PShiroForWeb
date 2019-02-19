@@ -7,9 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h4>List Page</h4>
-	<a href="admin.jsp">Admin Page</a><br/>
-	<a href="User.jsp">User Page</a><br/>
-	<a href="shiro/logout">Logout</a>
+	<h4>Admin Page</h4>
 </body>
 </html>
