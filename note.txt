@@ -14,3 +14,8 @@
 
 1)如何把一个字符串加密为MD5
 2)替换当前Realm的credentialsMatcher属性,直接使用HashedCredentialsMatcher对象，并设置加密算法即可！
+
+
+1.授权需要继承AuthorizingRealm，并实现其抽象方法doGetAuthorizationInfo方法
+2.AuthorizingRealm类继承自AuthenticatingRealm，但没有实现AuthenticatingRealm的doGetAuthenticationInfo方法，
+所以认证和授权只需继承AuthorizingRealm即可，同时实现doGetAuthorizationInfo和doGetAuthenticationInfo方法
