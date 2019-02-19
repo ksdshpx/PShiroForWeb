@@ -130,5 +130,6 @@
 			</value>
 		</property>
 	</bean>
-
+	<bean id="shiroService" class="cn.ksdshpx.shiro.service.ShiroService">
+	</bean>
 </beans>
