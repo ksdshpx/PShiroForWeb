@@ -1,5 +1,8 @@
 package cn.ksdshpx.shiro.realm;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -7,16 +10,22 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.realm.AuthenticatingRealm;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 /**
  * @author peng.x
  * @date 2019年1月24日 下午4:44:20
  */
-public class ShiroRealm extends AuthenticatingRealm {
+public class ShiroRealm extends AuthorizingRealm {
 
+	/**
+	 * 
+	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		System.out.println("[FirstRealm doGetAuthenticationInfo]");
@@ -52,6 +61,29 @@ public class ShiroRealm extends AuthenticatingRealm {
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(principal, credentials, credentialsSalt, realmName);
 		return info;
 	}
+	
+	/**
+	 * 授权需要实现的方法
+	 * @param principals
+	 * @return
+	 */
+	@Override
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		System.out.println("doGetAuthorizationInfo...");
+		//1.从PrincipalCollection中获取登录用户的信息
+		Object principal = principals.getPrimaryPrincipal();
+		//2.利用登录用户的信息来获取当前用户的角色或权限(可能需要查询数据库)
+		Set<String> roles = new HashSet<>();
+		roles.add("user");
+		if("admin".equals(principal)) {
+			roles.add("admin");
+		}
+		//3.创建SimpleAuthorizationInfo，并设置其roles属性
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roles);
+		//4.返回SimpleAuthorizationInfo
+		return info;
+	}
+	
 	public static void main(String[] args) {
 		String hashAlgorithmName = "MD5";
 		Object credentials = "123456";
