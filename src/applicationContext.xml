@@ -119,6 +119,7 @@
 			3)logout:登出
 			4)roles:角色过滤器
 		 -->
+		<!-- 
 		<property name="filterChainDefinitions">
 			<value>
 				/login.jsp = anon
@@ -128,8 +129,18 @@
 				/User.jsp = roles[user]
 				/** = authc
 			</value>
-		</property>
+		</property> 
+		-->
+		<property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"></property>
 	</bean>
+	
+	<!-- 配置一个bean,该bean实际上是一个Map,通过实例工厂方法的方式 -->
+	<bean id="filterChainDefinitionMap" factory-bean="filterChainDefinitionMapBuilder" factory-method="bulidFilterChainDefinitionMap">
+	</bean>
+	
+	<bean id="filterChainDefinitionMapBuilder" class="cn.ksdshpx.shiro.factory.FilterChainDefinitionMapBuilder">
+	</bean>
+	
 	<bean id="shiroService" class="cn.ksdshpx.shiro.service.ShiroService">
 	</bean>
 </beans>
